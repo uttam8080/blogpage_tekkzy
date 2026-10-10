@@ -25,6 +25,10 @@ app.get('/blogs', (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 Server listening on http://localhost:${PORT}`);
-});
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server listening on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
