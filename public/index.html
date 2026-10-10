@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Prancer &bull; Yoga to breathe. Dance to move.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-green: #072b22;
+      --dark-green-deep: #041f18;
+      --teal-accent: #0f766e;
+      --teal-light: #2dd4bf;
+      --mint-soft: #e6f7f2;
+      --bg-cream: #fbfdfc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --primary-blue: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* ---------------------------------------------------- */
+    /* AUTH VIEW (Happy Prancer Auth Portal)                */
+    /* ---------------------------------------------------- */
+    #authView {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0d3b30 0%, #072b22 60%, #031712 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .viewport-frame {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 640px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(3, 23, 18, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      background: url('/images/hp_bg.jpg') no-repeat center center / cover;
+      display: flex;
+      align-items: center;
+    }
+
+    .viewport-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 50%, rgba(7, 43, 34, 0.45) 0%, rgba(4, 31, 24, 0.85) 100%),
+                  linear-gradient(to right, rgba(4, 31, 24, 0.92) 0%, rgba(7, 43, 34, 0.65) 55%, rgba(4, 31, 24, 0.82) 100%);
+      pointer-events: none;
+    }
+
+    .content-grid {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 44px;
+      padding: 60px 70px;
+      align-items: center;
+    }
+
+    .hero-col {
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 490px;
+    }
+
+    .hp-auth-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.45rem;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+
+    .hp-auth-brand svg {
+      width: 32px;
+      height: 32px;
+      fill: #2dd4bf;
+      filter: drop-shadow(0 2px 8px rgba(45, 212, 191, 0.4));
+    }
+
+    .hp-auth-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(45, 212, 191, 0.15);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      color: #5eead4;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      width: fit-content;
+      margin-bottom: 2px;
+    }
+
+    .hero-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 3.2rem;
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-heading .highlight-mint {
+      color: #2dd4bf;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .hp-auth-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-top: 6px;
+    }
+
+    .hp-auth-perk-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hp-auth-perk-item span.icon-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(45, 212, 191, 0.22);
+      color: #2dd4bf;
+      font-size: 0.78rem;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .glass-card {
+      background: rgba(7, 43, 34, 0.62);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(45, 212, 191, 0.28);
+      border-radius: 26px;
+      padding: 38px 34px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      position: relative;
+    }
+
+    .field-group { margin-bottom: 18px; }
+
+    .field-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #e6f7f2;
+      margin-bottom: 7px;
+    }
+
+    .text-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .text-input:focus {
+      border-color: #2dd4bf;
+      box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.35);
+    }
+
+    .text-input::placeholder { color: #94a3b8; font-weight: 400; }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+      -webkit-text-fill-color: #0f172a !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .forgot-link-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+      margin-bottom: 18px;
+    }
+
+    .forgot-link {
+      font-size: 0.82rem;
+      color: #a7f3d0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .forgot-link:hover { color: #5eead4; }
+
+    .btn-submit {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #0d4a3c 0%, #072b22 100%);
+      color: #ffffff;
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(7, 43, 34, 0.6);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #115e4c 0%, #0a382c 100%);
+      border-color: #5eead4;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(15, 118, 110, 0.5);
+    }
+
+    .divider-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0;
+      font-size: 0.8rem;
+      color: rgba(230, 247, 242, 0.7);
+    }
+
+    .divider-row::before, .divider-row::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(230, 247, 242, 0.22);
+    }
+
+    .btn-google {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-google:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(94, 234, 212, 0.4);
+    }
+
+    .toggle-prompt {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.84rem;
+      color: rgba(230, 247, 242, 0.85);
+    }
+
+    .toggle-action {
+      color: #5eead4;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .toggle-action:hover {
+      color: #a7f3d0;
+    }
+
+    .alert-banner {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .alert-banner.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #a7f3d0;
+    }
+
+    .alert-banner.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fecaca;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ---------------------------------------------------- */
+    /* HAPPY PRANCER APPLICATION VIEW                       */
+    /* ---------------------------------------------------- */
+    #happyPrancerView {
+      display: none; /* revealed upon login */
+      background-color: var(--bg-cream);
+      min-height: 100vh;
+    }
+
+    /* Top Navbar */
+    .hp-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 64px;
+      background: #ffffff;
+      border-bottom: 1px solid #f1f5f9;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .hp-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--dark-green);
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+    }
+
+    .hp-logo svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--dark-green);
+    }
+
+    .hp-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .hp-nav-links a {
+      text-decoration: none;
+      color: #475569;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .hp-nav-links a:hover { color: var(--dark-green); font-weight: 600; }
+
+    .hp-user-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hp-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--dark-green);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .hp-btn-signout {
+      padding: 8px 18px;
+      background: var(--dark-green);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hp-btn-signout:hover {
+      background: #041f18;
+      transform: translateY(-1px);
+    }
+
+    /* SECTION 1: HERO */
+    .hp-hero {
+      padding: 50px 64px 80px;
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .hp-hero-left h1 {
+      font-size: 3.8rem;
+      line-height: 1.1;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hp-hero-left h1 span.highlight {
+      color: #0d5242;
+    }
+
+    .hp-hero-left p.sub-lead {
+      font-size: 1.1rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 34px;
+      max-width: 480px;
+    }
+
+    .hp-hero-actions {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn-hp-primary {
+      padding: 14px 28px;
+      background: var(--dark-green);
+      color: #ffffff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(7, 43, 34, 0.25);
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-hp-primary:hover {
+      background: #031b14;
+      transform: translateY(-2px);
+    }
+
+    .btn-hp-outline {
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--dark-green);
+      border: 1.5px solid var(--dark-green);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-hp-outline:hover {
+      background: rgba(7, 43, 34, 0.05);
+    }
+
+    .hp-hero-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Hero Right Visual Column */
+    .hp-hero-right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .circle-photo-wrapper {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 8px solid #ffffff;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      position: relative;
+      background: #e2e8f0;
+    }
+
+    .circle-photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .btn-watch-preview {
+      position: absolute;
+      bottom: -15px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--dark-green);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    /* Floating Card Top Right */
+    .float-card-1 {
+      position: absolute;
+      top: -20px;
+      right: 0px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      border: 1px solid #f1f5f9;
+      width: 230px;
+    }
+
+    .float-card-1 .tag {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #0f766e;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .float-card-1 h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .float-card-1 p {
+      font-size: 0.76rem;
+      color: #64748b;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .pill-tags {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pill-tags span {
+      background: #f1f5f9;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #334155;
+    }
+
+    /* Floating Card Bottom Right */
+    .float-card-2 {
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      border: 1px solid #f1f5f9;
+      width: 240px;
+    }
+
+    /* SECTION 2: SCHEDULE / OUR TYPICAL WEEK */
+    .hp-section-schedule {
+      background: var(--dark-green);
+      color: #ffffff;
+      padding: 80px 64px;
+      border-radius: 36px;
+      max-width: 1250px;
+      margin: 0 auto 100px;
+      position: relative;
+    }
+
+    .section-badge-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #a7f3d0;
+      margin-bottom: 40px;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 0.9fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .schedule-card-left {
+      background: #042119;
+      padding: 32px 28px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .schedule-card-left h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .schedule-card-left p {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .sub-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .sub-tab-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      border: none;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .sub-tab-btn.active {
+      background: #ffffff;
+      color: var(--dark-green);
+    }
+
+    .flow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: #a7f3d0;
+    }
+
+    /* Center Schedule List */
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .class-item {
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .class-item h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .class-item p {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .class-item .author {
+      font-size: 0.75rem;
+      color: #5eead4;
+      font-weight: 600;
+    }
+
+    /* Timeline Right Column */
+    .timeline-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-left: 20px;
+      border-left: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .timeline-node h5 {
+      font-size: 0.78rem;
+      color: #5eead4;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .timeline-node p {
+      font-size: 0.84rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.4;
+    }
+
+    /* SECTION 3: MEMBERSHIPS */
+    .hp-pricing-section {
+      padding: 60px 64px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hp-pricing-section h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #0f172a;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    .pricing-toggle {
+      display: inline-flex;
+      background: #f1f5f9;
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 50px;
+    }
+
+    .p-toggle-btn {
+      padding: 8px 24px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .p-toggle-btn.active {
+      background: var(--dark-green);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(7, 43, 34, 0.2);
+    }
+
+    .pricing-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      text-align: left;
+    }
+
+    .price-card-dark {
+      background: var(--dark-green);
+      color: #ffffff;
+      padding: 42px 36px;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(7, 43, 34, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .price-card-light {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 42px 36px;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .price-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .price-amount {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin: 16px 0 8px;
+    }
+
+    /* SECTION 4: COMMUNITY & TESTIMONIALS */
+    .hp-community-section {
+      background: #f0fdf4;
+      padding: 90px 64px;
+      margin-bottom: 80px;
+    }
+
+    .community-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .community-left h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #064e3b;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .community-left p {
+      font-size: 1rem;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .t-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid #dcfce7;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    }
+
+    .t-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .t-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #a7f3d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #064e3b;
+    }
+
+    .t-card p {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* SECTION 5: FAQS */
+    .hp-faq-section {
+      max-width: 1100px;
+      margin: 0 auto 100px;
+      padding: 0 30px;
+    }
+
+    .hp-faq-section h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 50px;
+      color: #0f172a;
+    }
+
+    .faq-container {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 40px;
+    }
+
+    .faq-help-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+    }
+
+    .faq-help-box h4 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .faq-help-box p {
+      font-size: 0.86rem;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .faq-item:hover { border-color: #cbd5e1; }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .faq-a {
+      font-size: 0.86rem;
+      color: #64748b;
+      margin-top: 10px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-q span { transform: rotate(45deg); }
+
+    /* FOOTER */
+    .hp-footer {
+      background: var(--dark-green-deep);
+      color: #ffffff;
+      padding: 70px 64px 30px;
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-col h5 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      color: #a7f3d0;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.15s;
+    }
+
+    .footer-col a:hover { color: #ffffff; }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 24px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .hp-hero, .community-container, .schedule-grid, .pricing-cards-grid, .faq-container {
+        grid-template-columns: 1fr;
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+      }
+    /* BLOG SECTION */
+    .hp-blog-section {
+      max-width: 1250px;
+      margin: 0 auto 100px;
+      padding: 0 40px;
+    }
+
+    .blog-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 36px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .blog-header-left h2 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-top: 8px;
+    }
+
+    .blog-header-left p {
+      font-size: 0.95rem;
+      color: #64748b;
+      max-width: 540px;
+      line-height: 1.5;
+    }
+
+    .btn-create-blog {
+      padding: 12px 24px;
+      background: var(--dark-green);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(7, 43, 34, 0.2);
+      transition: all 0.2s;
+    }
+
+    .btn-create-blog:hover {
+      background: #031b14;
+      transform: translateY(-2px);
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 28px;
+    }
+
+    .blog-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .blog-card-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      background: #e6f7f2;
+      color: #065f46;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .blog-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .blog-card p {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-author-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .blog-author-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .blog-author-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0f766e;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    /* Modal for reading and creating articles */
+    .blog-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .blog-modal {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 650px;
+      width: 100%;
+      padding: 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .blog-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f1f5f9;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================================================== -->
+  <!-- 1. AUTHENTICATION VIEW                                -->
+  <!-- ==================================================== -->
+  <div id="authView">
+    <div class="viewport-frame">
+      <div class="content-grid">
+
+        <!-- Left Happy Prancer Branding & Headline Column -->
+        <div class="hero-col">
+          <div class="hp-auth-brand">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L9 8h6l-3-6zm-7 8l2 5h10l2-5H5zm2 7l1 5h8l1-5H7z"/>
+            </svg>
+            <span>happyPrancer</span>
+          </div>
+
+          <div class="hp-auth-pill">
+            <span>&bull;</span> WELLNESS &bull; YOGA &bull; DANCE
+          </div>
+
+          <h1 class="hero-heading">
+            Yoga to <span class="highlight-mint">breathe.</span><br>
+            Dance to <span class="highlight-mint">move.</span>
+          </h1>
+
+          <p class="hero-tagline">
+            A circular routine you actually want to stick with: slow mats, loud music and strong, supported movement.
+          </p>
+
+          <div class="hp-auth-perks">
+            <div class="hp-auth-perk-item">
+              <span class="icon-check">&#10003;</span>
+              <span>Daily 2-Class Routine (Flow + Cardio Dance)</span>
+            </div>
+            <div class="hp-auth-perk-item">
+              <span class="icon-check">&#10003;</span>
+              <span>Online &amp; In-Studio Hybrid Flexibility</span>
+            </div>
+            <div class="hp-auth-perk-item">
+              <span class="icon-check">&#10003;</span>
+              <span>10,000+ Daily Movers Orbiting One Habit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Frosted Glassmorphism Auth Card -->
+        <div class="glass-card">
+          
+          <!-- Interactive Sign In / Sign Up Form State -->
+          <div id="authFormState">
+            <form id="travelAuthForm" autocomplete="on">
+              
+              <!-- Username (Displayed on Create Account) -->
+              <div id="usernameFieldGroup" class="field-group hidden">
+                <label for="usernameInput" class="field-label">Username</label>
+                <input id="usernameInput" class="text-input" type="text" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <!-- Email -->
+              <div class="field-group">
+                <label for="emailInput" class="field-label">Email</label>
+                <input id="emailInput" class="text-input" type="email" placeholder="Enter your email" required autocomplete="email" />
+              </div>
+
+              <!-- Hidden autofill traps to prevent Chrome/Edge from pre-filling saved passwords -->
+              <input type="text" style="display:none" aria-hidden="true" tabindex="-1" />
+              <input type="password" style="display:none" aria-hidden="true" tabindex="-1" />
+
+              <!-- Password -->
+              <div class="field-group" style="margin-bottom: 4px;">
+                <label for="passwordInput" class="field-label">Password</label>
+                <input id="passwordInput" class="text-input" type="password" placeholder="Password" value="" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" required />
+              </div>
+
+              <!-- Forgot Password Link -->
+              <div id="forgotRow" class="forgot-link-row">
+                <a href="javascript:void(0)" id="btnForgot" class="forgot-link">Forgot password?</a>
+              </div>
+
+              <!-- Main Action Button -->
+              <button id="btnAuthSubmit" class="btn-submit" type="submit">SIGN IN</button>
+
+              <!-- Toggle between Sign In and Create an Account -->
+              <div class="toggle-prompt">
+                <span id="toggleQuestion">Are you new?</span>
+                <span id="toggleModeBtn" class="toggle-action">Create an Account</span>
+              </div>
+            </form>
+
+            <div id="authAlert" class="alert-banner"></div>
+          </div>
+
+          <!-- Reset Password State -->
+          <div id="resetFormState" class="hidden">
+            <div style="margin-bottom: 20px;">
+              <h2 style="font-size: 1.35rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Reset Password</h2>
+              <p style="font-size: 0.84rem; color: rgba(255, 255, 255, 0.82);">Enter your email to verify and update your password</p>
+            </div>
+
+            <form id="resetPasswordForm">
+              <div class="field-group">
+                <label for="resetEmailInput" class="field-label">Account Email</label>
+                <input id="resetEmailInput" class="text-input" type="email" placeholder="Enter your email" required />
+              </div>
+
+              <div id="newPassGroup" class="field-group hidden">
+                <label for="newPassInput" class="field-label">New Password</label>
+                <input id="newPassInput" class="text-input" type="password" placeholder="Enter new password (min 6 chars)" autocomplete="new-password" />
+              </div>
+
+              <button id="btnResetSubmit" class="btn-submit" type="submit">VERIFY ACCOUNT</button>
+
+              <div class="toggle-prompt" style="margin-top: 18px;">
+                <a href="javascript:void(0)" id="btnBackToAuth" class="toggle-action">&larr; Back to Sign In</a>
+              </div>
+            </form>
+
+            <div id="resetAlert" class="alert-banner"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- 2. HAPPY PRANCER DASHBOARD VIEW (Shown After Login)  -->
+  <!-- ==================================================== -->
+  <div id="happyPrancerView">
+    
+    <!-- Top Navbar -->
+    <header class="hp-navbar">
+      <a href="#" class="hp-logo">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2L9 8h6l-3-6zm-7 8l2 5h10l2-5H5zm2 7l1 5h8l1-5H7z"/>
+        </svg>
+        <span>happyPrancer</span>
+      </a>
+
+      <ul class="hp-nav-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#instructor">Instructor</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#leaderboard">Leaderboard</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="/blogs.html">Blogs</a></li>
+      </ul>
+
+      <!-- User Session Control in Header -->
+      <div class="hp-user-badge">
+        <div id="hpNavAvatar" class="hp-avatar">R</div>
+        <span id="hpNavUsername" style="font-weight: 700; font-size: 0.92rem; color: #0f172a;">raja_dev</span>
+        <button id="btnHpSignOut" class="hp-btn-signout" type="button">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hp-hero">
+      <div class="hp-hero-left">
+        <h1>
+          Yoga to <span class="highlight">breathe.</span><br>
+          Dance to <span class="highlight">move.</span>
+        </h1>
+        <p class="sub-lead">
+          A circular routine you actually want to stick with: slow mats, loud music and strong, supported movement—all orbiting one simple membership.
+        </p>
+
+        <div class="hp-hero-actions">
+          <button class="btn-hp-primary">Begin Online Journey</button>
+          <button class="btn-hp-outline">Begin Hybrid Journey</button>
+        </div>
+
+        <div class="hp-hero-meta">
+          <span>&bull; Orbit around our newest classes</span>
+          <span>&bull; Co-created with dance & strength stars</span>
+        </div>
+      </div>
+
+      <div class="hp-hero-right">
+        <!-- Floating Card 1 -->
+        <div class="float-card-1">
+          <div class="tag">POPULAR ROUTINE</div>
+          <h4>Daily 2-Class Routine</h4>
+          <p>A fresh 45m flow followed by 30m high-energy dance session every morning.</p>
+          <div class="pill-tags">
+            <span>45m daily</span>
+            <span>Live stream</span>
+          </div>
+        </div>
+
+        <!-- Center Circle Yoga Visual -->
+        <div class="circle-photo-wrapper">
+          <img src="/images/yoga.jpg" alt="Yoga Practitioner Tree Pose" />
+          <div class="btn-watch-preview">
+            <span>&#9654;</span> Watch preview
+          </div>
+        </div>
+
+        <!-- Floating Card 2 -->
+        <div class="float-card-2">
+          <div class="tag">HYBRID CHOICE</div>
+          <h4>Online + In-Person Blend</h4>
+          <p>Full access to all streams plus 2 in-studio monthly guest passes.</p>
+          <div class="pill-tags">
+            <span>Flexible</span>
+            <span>Community</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Schedule / Our Typical Week -->
+    <section id="schedule" class="hp-section-schedule">
+      <div class="section-badge-pill">OUR TYPICAL WEEK</div>
+
+      <div class="schedule-grid">
+        <!-- Left info card -->
+        <div class="schedule-card-left">
+          <h3>Build a day that feels balanced</h3>
+          <p>Switch colors from a calm morning flow to an evening dance session, discovering daily how your stamina fits into this.</p>
+
+          <div class="sub-tabs">
+            <button class="sub-tab-btn active">Online Classes</button>
+            <button class="sub-tab-btn">Hybrid Studio</button>
+          </div>
+
+          <div class="flow-badge">
+            <span>&#9733;</span> Customize your weekly flow with ease.
+          </div>
+        </div>
+
+        <!-- Middle session descriptions -->
+        <div class="schedule-list">
+          <div class="class-item">
+            <h4>Online Yoga Flow</h4>
+            <p>A centering sequence designed to improve flexibility, reduce stress, and start your morning right.</p>
+            <div class="author">Starts everyday by: Celine Gomez</div>
+          </div>
+
+          <div class="class-item">
+            <h4>Zumba Energy Session</h4>
+            <p>A high-tempo dance workout blending Latin rhythms with heart-pumping cardio moves. Every session brings energy with upbeat music.</p>
+            <div class="author">Starts everyday by: Celine Gomez</div>
+          </div>
+
+          <div class="class-item">
+            <h4>Desi-fit Dance</h4>
+            <p>A vibrant, high-spirited dance session that blends traditional moves, energetic beats, and joyful rhythms.</p>
+            <div class="author">Starts everyday by: Celine Gomez</div>
+          </div>
+        </div>
+
+        <!-- Right Timeline -->
+        <div class="timeline-col">
+          <div class="timeline-node">
+            <h5>MORNING</h5>
+            <p>10-min movement flow for everyday wellness and quiet focus.</p>
+          </div>
+
+          <div class="timeline-node">
+            <h5>AFTERNOON</h5>
+            <p>Gentle active break to balance energy over mid-day work hours.</p>
+          </div>
+
+          <div class="timeline-node">
+            <h5>EVENING</h5>
+            <p>Full circular dance movement for high stamina and restful nights.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Pricing & Memberships -->
+    <section id="pricing" class="hp-pricing-section">
+      <h2>FIND THE MEMBERSHIP THAT FITS YOUR FLOW</h2>
+
+      <div class="pricing-toggle">
+        <button class="p-toggle-btn">1M</button>
+        <button class="p-toggle-btn active">Monthly</button>
+        <button class="p-toggle-btn">Yearly</button>
+      </div>
+
+      <div class="pricing-cards-grid">
+        <!-- Individual Card -->
+        <div class="price-card-dark">
+          <div>
+            <div class="price-badge" style="background:rgba(255,255,255,0.15); color:#a7f3d0;">Standard Solo</div>
+            <h3 style="font-size:1.6rem; font-weight:700;">Individual Subscription</h3>
+            <p style="color:rgba(255,255,255,0.8); font-size:0.9rem; margin-top:8px;">Access to unlimited daily online flows, live coaching, and library recordings.</p>
+            <div class="price-amount">&#8377;100 <span style="font-size:1rem; font-weight:500;">/mo</span></div>
+          </div>
+          <button class="btn-hp-outline" style="color:#ffffff; border-color:#ffffff; margin-top:30px;">Choose Plan</button>
+        </div>
+
+        <!-- Family Card -->
+        <div class="price-card-light">
+          <div>
+            <div class="price-badge" style="background:#dcfce7; color:#065f46;">Recommended</div>
+            <h3 style="font-size:1.6rem; font-weight:700; color:#0f172a;">Family Subscription</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:8px;">Shared access for up to 4 family profiles with individual progress tracking and schedule builder.</p>
+            <div class="price-amount" style="color:#0f172a;">&#8377;250 <span style="font-size:1rem; font-weight:500; color:#64748b;">/mo</span></div>
+          </div>
+          <button class="btn-hp-primary" style="margin-top:30px;">Choose Plan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Community & Testimonials -->
+    <section id="community" class="hp-community-section">
+      <div class="community-container">
+        <div class="community-left">
+          <h2>We believe in the power of movement together</h2>
+          <p>Our mission is to help you build a routine you actually enjoy. That's why we focus on simple, daily sessions that fit your life and keep you consistent—with a community that grows with you.</p>
+        </div>
+
+        <div class="testimonial-grid">
+          <div class="t-card">
+            <div class="t-header">
+              <div class="t-avatar">P</div>
+              <div>
+                <h5 style="font-size:0.9rem; font-weight:700;">Priya S.</h5>
+                <span style="font-size:0.75rem; color:#64748b;">Bengaluru</span>
+              </div>
+            </div>
+            <p>"The 45-minute morning flow helped me eliminate back stiffness. I haven't missed a single session in 3 months!"</p>
+          </div>
+
+          <div class="t-card">
+            <div class="t-header">
+              <div class="t-avatar" style="background:#bae6fd; color:#0369a1;">R</div>
+              <div>
+                <h5 style="font-size:0.9rem; font-weight:700;">Rohit K.</h5>
+                <span style="font-size:0.75rem; color:#64748b;">Mumbai</span>
+              </div>
+            </div>
+            <p>"Zumba sessions bring unmatched energy into my work-from-home routine. Truly uplifting community vibes!"</p>
+          </div>
+
+          <div class="t-card">
+            <div class="t-header">
+              <div class="t-avatar" style="background:#fde68a; color:#b45309;">A</div>
+              <div>
+                <h5 style="font-size:0.9rem; font-weight:700;">Ananya M.</h5>
+                <span style="font-size:0.75rem; color:#64748b;">Delhi</span>
+              </div>
+            </div>
+            <p>"Desi-fit Dance feels like a celebration rather than exercise. My entire family joins in on weekends."</p>
+          </div>
+
+          <div class="t-card">
+            <div class="t-header">
+              <div class="t-avatar" style="background:#fbcfe8; color:#be185d;">S</div>
+              <div>
+                <h5 style="font-size:0.9rem; font-weight:700;">Sneha D.</h5>
+                <span style="font-size:0.75rem; color:#64748b;">Hyderabad</span>
+              </div>
+            </div>
+            <p>"Flexible timings make consistency easy. Clean platform, top-notch trainers, and very peaceful music."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: FAQs -->
+    <section id="faqs" class="hp-faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-container">
+        <div class="faq-help-box">
+          <h4>Need something else?</h4>
+          <p>If you don't see your question here, reach out to help us tailor our experience to solve for your rhythm.</p>
+          <a href="mailto:hello@happyprancer.com" class="btn-hp-primary" style="display:inline-block; font-size:0.85rem; padding:12px 20px;">hello@happyprancer.com</a>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>What is Happy Prancer?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-a">Happy Prancer is an all-in-one circular wellness club blending daily yoga flows, Zumba cardio, and cultural dance workouts to build consistent movement habits.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>What is our mission?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-a">Our mission is making healthy movement joyful, sustainable, and free from intimidating gym environments.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>Do I have to pay any subscription charges?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-a">We offer a 7-day free trial on all memberships. You can pause or cancel anytime with zero cancellation penalties.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>I am a GYM owner, how can I connect?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-a">We partner with verified studio spaces for hybrid classes. Reach out to partners@happyprancer.com with your studio location.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>What is a hybrid class?</span>
+              <span>+</span>
+            </div>
+            <div class="faq-a">A hybrid class gives you live stream access along with physical credits to attend partner studio sessions in person.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="hp-footer">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="hp-logo" style="color:#ffffff; margin-bottom:14px; display:inline-flex;">
+            <svg viewBox="0 0 24 24" style="fill:#ffffff;">
+              <path d="M12 2L9 8h6l-3-6zm-7 8l2 5h10l2-5H5zm2 7l1 5h8l1-5H7z"/>
+            </svg>
+            <span>happyPrancer</span>
+          </a>
+          <p style="font-size:0.84rem; color:rgba(255,255,255,0.65); line-height:1.6; max-width:260px;">
+            A quiet corner of the internet for yoga, Zumba, and Dance—three ways to feel lighter in your day.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>COMPANY</h5>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Instructors</a></li>
+            <li><a href="#">Gallery</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>PRODUCT</h5>
+          <ul>
+            <li><a href="#">Classes</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Schedule</a></li>
+            <li><a href="#">Zumba</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>LEGAL</h5>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Cancellation Policy</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>CONTACT</h5>
+          <ul>
+            <li><a href="mailto:hello@happyprancer.com">hello@happyprancer.com</a></li>
+            <li><a href="#">+91 9123456789</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        All rights reserved &copy; 2026 happyprancer.com
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    let mode = 'signin'; // 'signin' | 'signup'
+
+    // DOM Elements
+    const authView = document.getElementById('authView');
+    const happyPrancerView = document.getElementById('happyPrancerView');
+    const authFormState = document.getElementById('authFormState');
+    const resetFormState = document.getElementById('resetFormState');
+
+    const usernameFieldGroup = document.getElementById('usernameFieldGroup');
+    const usernameInput = document.getElementById('usernameInput');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const forgotRow = document.getElementById('forgotRow');
+    const btnAuthSubmit = document.getElementById('btnAuthSubmit');
+    const toggleQuestion = document.getElementById('toggleQuestion');
+    const toggleModeBtn = document.getElementById('toggleModeBtn');
+    const authAlert = document.getElementById('authAlert');
+
+    const hpNavUsername = document.getElementById('hpNavUsername');
+    const hpNavAvatar = document.getElementById('hpNavAvatar');
+    const btnHpSignOut = document.getElementById('btnHpSignOut');
+
+    // Reset Form elements
+    const resetEmailInput = document.getElementById('resetEmailInput');
+    const newPassGroup = document.getElementById('newPassGroup');
+    const newPassInput = document.getElementById('newPassInput');
+    const btnResetSubmit = document.getElementById('btnResetSubmit');
+    const resetAlert = document.getElementById('resetAlert');
+    const btnBackToAuth = document.getElementById('btnBackToAuth');
+
+    let resetToken = '';
+    let resetStep = 'verify';
+
+    // Clear input values
+    function wipeInputs() {
+      if (passwordInput) passwordInput.value = '';
+      if (emailInput) emailInput.value = '';
+      if (usernameInput) usernameInput.value = '';
+    }
+    wipeInputs();
+    window.addEventListener('load', () => setTimeout(wipeInputs, 100));
+
+    function showAlert(type, text) {
+      authAlert.className = `alert-banner ${type}`;
+      authAlert.innerText = text;
+      authAlert.style.display = 'block';
+    }
+
+    function clearAlert() {
+      authAlert.style.display = 'none';
+    }
+
+    function showResetAlert(type, text) {
+      resetAlert.className = `alert-banner ${type}`;
+      resetAlert.innerText = text;
+      resetAlert.style.display = 'block';
+    }
+
+    function clearResetAlert() {
+      resetAlert.style.display = 'none';
+    }
+
+    // Toggle Sign In / Create Account
+    function setMode(newMode) {
+      mode = newMode;
+      clearAlert();
+
+      if (mode === 'signin') {
+        usernameFieldGroup.classList.add('hidden');
+        usernameInput.removeAttribute('required');
+        forgotRow.classList.remove('hidden');
+        btnAuthSubmit.innerText = 'SIGN IN';
+        toggleQuestion.innerText = 'Are you new?';
+        toggleModeBtn.innerText = 'Create an Account';
+      } else {
+        usernameFieldGroup.classList.remove('hidden');
+        usernameInput.setAttribute('required', 'true');
+        forgotRow.classList.add('hidden');
+        btnAuthSubmit.innerText = 'CREATE ACCOUNT';
+        toggleQuestion.innerText = 'Already have an account?';
+        toggleModeBtn.innerText = 'Sign in';
+      }
+    }
+
+    toggleModeBtn.addEventListener('click', () => {
+      setMode(mode === 'signin' ? 'signup' : 'signin');
+    });
+
+    // Forgot Password Trigger
+    document.getElementById('btnForgot').addEventListener('click', () => {
+      authFormState.classList.add('hidden');
+      resetFormState.classList.remove('hidden');
+      resetStep = 'verify';
+      resetToken = '';
+      resetEmailInput.value = emailInput.value || '';
+      resetEmailInput.removeAttribute('disabled');
+      newPassGroup.classList.add('hidden');
+      newPassInput.value = '';
+      btnResetSubmit.innerText = 'VERIFY ACCOUNT';
+      clearResetAlert();
+    });
+
+    btnBackToAuth.addEventListener('click', () => {
+      resetFormState.classList.add('hidden');
+      authFormState.classList.remove('hidden');
+      clearAlert();
+    });
+
+    // Reset Password Form Submit
+    document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearResetAlert();
+
+      const email = resetEmailInput.value.trim();
+
+      if (resetStep === 'verify') {
+        btnResetSubmit.disabled = true;
+        btnResetSubmit.innerText = 'CHECKING...';
+
+        try {
+          const res = await fetch('/api/auth/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Verification failed');
+
+          resetToken = data.resetToken;
+          resetStep = 'update';
+          resetEmailInput.setAttribute('disabled', 'true');
+          newPassGroup.classList.remove('hidden');
+          newPassInput.focus();
+          btnResetSubmit.innerText = 'UPDATE PASSWORD';
+          showResetAlert('success', '✅ Account verified! Please enter your new password.');
+        } catch (err) {
+          showResetAlert('error', `❌ ${err.message}`);
+        } finally {
+          btnResetSubmit.disabled = false;
+        }
+
+      } else {
+        const newPassword = newPassInput.value;
+        if (!newPassword || newPassword.length < 6) {
+          showResetAlert('error', '❌ Password must be at least 6 characters long.');
+          return;
+        }
+
+        btnResetSubmit.disabled = true;
+        btnResetSubmit.innerText = 'UPDATING...';
+
+        try {
+          const res = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, resetToken, newPassword })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Reset failed');
+
+          showResetAlert('success', '🎉 Password updated! Switching to sign in...');
+          setTimeout(() => {
+            resetFormState.classList.add('hidden');
+            authFormState.classList.remove('hidden');
+            emailInput.value = email;
+            passwordInput.value = '';
+            setMode('signin');
+            showAlert('success', '✅ Password updated! Sign in with your new password.');
+          }, 1500);
+        } catch (err) {
+          showResetAlert('error', `❌ ${err.message}`);
+        } finally {
+          btnResetSubmit.disabled = false;
+        }
+      }
+    });
+
+    // Auth Form Submission
+    document.getElementById('travelAuthForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const username = usernameInput.value.trim();
+
+      btnAuthSubmit.disabled = true;
+      btnAuthSubmit.innerText = mode === 'signin' ? 'AUTHENTICATING...' : 'CREATING ACCOUNT...';
+
+      try {
+        if (mode === 'signup') {
+          // 1. REGISTER IN POSTGRESQL
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Registration failed');
+
+          showAlert('success', '✅ Account created in PostgreSQL! Switching to sign in...');
+          setTimeout(() => {
+            setMode('signin');
+            passwordInput.value = '';
+          }, 1000);
+
+        } else {
+          // 2. SIGN IN & GET JWT
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'Login failed');
+
+          // Store token quietly in localStorage
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('authUser', JSON.stringify(data.user));
+
+          // Reveal Happy Prancer page!
+          renderHappyPrancer(data.user);
+        }
+      } catch (err) {
+        showAlert('error', `❌ ${err.message}`);
+      } finally {
+        btnAuthSubmit.disabled = false;
+        btnAuthSubmit.innerText = mode === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT';
+      }
+    });
+
+    // Reveal Happy Prancer Page
+    function renderHappyPrancer(user) {
+      authView.style.display = 'none';
+      happyPrancerView.style.display = 'block';
+
+      const isAdmin = user.role === 'ADMIN' || (user.email && user.email.toLowerCase() === 'adminuser@gmail.com');
+      hpNavUsername.innerText = isAdmin ? `${user.username || 'Admin'} (Admin 🛡️)` : (user.username || 'Traveler');
+      hpNavAvatar.innerText = (user.username || 'H')[0].toUpperCase();
+      if (isAdmin) {
+        hpNavAvatar.style.background = '#d97706';
+      } else {
+        hpNavAvatar.style.background = '#0f766e';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Sign Out
+    btnHpSignOut.addEventListener('click', () => {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      happyPrancerView.style.display = 'none';
+      authView.style.display = 'flex';
+      passwordInput.value = '';
+      setMode('signin');
+      clearAlert();
+    });
+
+    // Check if user is already logged in on page load
+    const savedToken = localStorage.getItem('authToken');
+    const savedUser = localStorage.getItem('authUser');
+    if (savedToken && savedUser) {
+      try {
+        renderHappyPrancer(JSON.parse(savedUser));
+      } catch(e) {
+        localStorage.clear();
+      }
+    }
+
+    // Interactive FAQ Accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
