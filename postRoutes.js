@@ -1,29 +1,36 @@
-// postRoutes.js
+// postRoutes.js - Blog post routes using PostgreSQL ('pg')
 import express from 'express';
-import prisma from './db.js';
-import { verifyToken, verifyAdmin } from './authmiddleware.js';
+import crypto from 'crypto';
+import pool from './db.js';
+import { verifyToken, verifyAdmin } from './authMiddleware.js';
 
 const router = express.Router();
 
 // 1. GET ALL APPROVED / PUBLISHED BLOG POSTS (Public & Website)
 router.get('/', async (req, res) => {
   try {
-    const posts = await prisma.post.findMany({
-      where: { published: true },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        author: {
-          select: {
-            id: true,
-            username: true,
-            email: true,
-            role: true
-          }
-        }
-      }
-    });
+    const result = await pool.query(`
+      SELECT 
+        p.id, 
+        p.title, 
+        p.content, 
+        p.published, 
+        p."createdAt", 
+        p."updatedAt", 
+        p."authorId",
+        json_build_object(
+          'id', u.id,
+          'username', u.username,
+          'email', u.email,
+          'role', u.role
+        ) AS author
+      FROM "Post" p
+      LEFT JOIN "User" u ON p."authorId" = u.id
+      WHERE p.published = true
+      ORDER BY p."createdAt" DESC
+    `);
 
-    res.status(200).json(posts);
+    res.status(200).json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching blog posts', error: error.message });
   }
@@ -32,21 +39,27 @@ router.get('/', async (req, res) => {
 // 2. GET PENDING BLOG SUBMISSIONS (Admin Only)
 router.get('/pending', verifyAdmin, async (req, res) => {
   try {
-    const pendingPosts = await prisma.post.findMany({
-      where: { published: false },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        author: {
-          select: {
-            id: true,
-            username: true,
-            email: true
-          }
-        }
-      }
-    });
+    const result = await pool.query(`
+      SELECT 
+        p.id, 
+        p.title, 
+        p.content, 
+        p.published, 
+        p."createdAt", 
+        p."updatedAt", 
+        p."authorId",
+        json_build_object(
+          'id', u.id,
+          'username', u.username,
+          'email', u.email
+        ) AS author
+      FROM "Post" p
+      LEFT JOIN "User" u ON p."authorId" = u.id
+      WHERE p.published = false
+      ORDER BY p."createdAt" DESC
+    `);
 
-    res.status(200).json(pendingPosts);
+    res.status(200).json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching pending posts', error: error.message });
   }
@@ -63,25 +76,24 @@ router.post('/', verifyToken, async (req, res) => {
 
     const isAdmin = req.user.role === 'ADMIN' || (req.user.email && req.user.email.toLowerCase() === 'adminuser@gmail.com');
 
-    // Admin posts are published directly; regular user posts are stored in DB with published: false (Pending)
-    const isPublished = isAdmin ? true : false;
+    // Admin posts are published directly; regular user posts are stored with published = false (Pending)
+    const isPublished = Boolean(isAdmin);
+    const postId = crypto.randomUUID();
 
-    const post = await prisma.post.create({
-      data: {
-        title,
-        content,
-        published: isPublished,
-        authorId: req.user.userId
-      },
-      include: {
-        author: {
-          select: {
-            username: true,
-            email: true
-          }
-        }
-      }
-    });
+    const insertResult = await pool.query(
+      `INSERT INTO "Post" (id, title, content, published, "authorId", "createdAt", "updatedAt")
+       VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+       RETURNING id, title, content, published, "authorId", "createdAt", "updatedAt"`,
+      [postId, title.trim(), content.trim(), isPublished, req.user.userId]
+    );
+
+    const post = insertResult.rows[0];
+    post.author = {
+      id: req.user.userId,
+      username: req.user.username,
+      email: req.user.email,
+      role: req.user.role
+    };
 
     res.status(201).json({
       message: isPublished
@@ -100,27 +112,37 @@ router.put('/:id/accept', verifyAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existing = await prisma.post.findUnique({ where: { id } });
-    if (!existing) {
+    const existing = await pool.query('SELECT id FROM "Post" WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Blog post not found.' });
     }
 
-    const updated = await prisma.post.update({
-      where: { id },
-      data: { published: true },
-      include: {
-        author: {
-          select: {
-            username: true,
-            email: true
-          }
-        }
-      }
-    });
+    await pool.query(
+      'UPDATE "Post" SET published = true, "updatedAt" = NOW() WHERE id = $1',
+      [id]
+    );
+
+    const updatedResult = await pool.query(`
+      SELECT 
+        p.id, 
+        p.title, 
+        p.content, 
+        p.published, 
+        p."createdAt", 
+        p."updatedAt", 
+        p."authorId",
+        json_build_object(
+          'username', u.username,
+          'email', u.email
+        ) AS author
+      FROM "Post" p
+      LEFT JOIN "User" u ON p."authorId" = u.id
+      WHERE p.id = $1
+    `, [id]);
 
     res.status(200).json({
       message: '✅ Blog post accepted and published to the website!',
-      post: updated
+      post: updatedResult.rows[0]
     });
   } catch (error) {
     res.status(500).json({ message: 'Error accepting blog post', error: error.message });
@@ -132,14 +154,12 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existing = await prisma.post.findUnique({ where: { id } });
-    if (!existing) {
+    const existing = await pool.query('SELECT id FROM "Post" WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Blog post not found.' });
     }
 
-    await prisma.post.delete({
-      where: { id }
-    });
+    await pool.query('DELETE FROM "Post" WHERE id = $1', [id]);
 
     res.status(200).json({
       message: '🗑️ Blog post rejected and permanently deleted from PostgreSQL.'
@@ -154,14 +174,12 @@ router.post('/:id/reject', verifyAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existing = await prisma.post.findUnique({ where: { id } });
-    if (!existing) {
+    const existing = await pool.query('SELECT id FROM "Post" WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
       return res.status(404).json({ message: 'Blog post not found.' });
     }
 
-    await prisma.post.delete({
-      where: { id }
-    });
+    await pool.query('DELETE FROM "Post" WHERE id = $1', [id]);
 
     res.status(200).json({
       message: '🗑️ Blog post rejected and permanently deleted from PostgreSQL.'

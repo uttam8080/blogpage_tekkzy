@@ -6,8 +6,7 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "public/**",
-          "prisma/**"
+          "public/**"
         ]
       }
     }

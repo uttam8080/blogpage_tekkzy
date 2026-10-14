@@ -1,9 +1,10 @@
-// authRoutes.js
+// authRoutes.js - Authentication routes using PostgreSQL ('pg')
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { verifyToken } from './authmiddleware.js';
-import prisma from './db.js';
+import crypto from 'crypto';
+import { verifyToken } from './authMiddleware.js';
+import pool from './db.js';
 
 const router = express.Router();
 
@@ -18,11 +19,12 @@ router.post('/register', async (req, res) => {
     }
 
     // Check if user already exists in PostgreSQL
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
-    });
+    const existingResult = await pool.query(
+      'SELECT id FROM "User" WHERE LOWER(email) = LOWER($1)',
+      [email.trim()]
+    );
 
-    if (existingUser) {
+    if (existingResult.rows.length > 0) {
       return res.status(409).json({ message: 'User already exists with this email.' });
     }
 
@@ -30,17 +32,18 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const role = (email.toLowerCase() === 'adminuser@gmail.com') ? 'ADMIN' : 'USER';
+    const role = (email.toLowerCase().trim() === 'adminuser@gmail.com') ? 'ADMIN' : 'USER';
+    const userId = crypto.randomUUID();
 
-    // Save user to PostgreSQL via Prisma
-    const newUser = await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        role
-      }
-    });
+    // Save user to PostgreSQL
+    const insertResult = await pool.query(
+      `INSERT INTO "User" (id, username, email, password, role, "createdAt", "updatedAt")
+       VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+       RETURNING id, username, email, role, "createdAt"`,
+      [userId, username.trim(), email.toLowerCase().trim(), hashedPassword, role]
+    );
+
+    const newUser = insertResult.rows[0];
 
     res.status(201).json({ 
       message: 'User registered successfully!',
@@ -62,13 +65,16 @@ router.post('/login', async (req, res) => {
     }
 
     // Find user in PostgreSQL
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
+    const userResult = await pool.query(
+      'SELECT * FROM "User" WHERE LOWER(email) = LOWER($1)',
+      [email.trim()]
+    );
 
-    if (!user) {
+    if (userResult.rows.length === 0) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
+
+    const user = userResult.rows[0];
 
     // Compare password with hashed password
     const isMatch = await bcrypt.compare(password, user.password);
@@ -110,23 +116,18 @@ router.post('/login', async (req, res) => {
 router.get('/profile', verifyToken, async (req, res) => {
   try {
     // Fetch latest user details from PostgreSQL (omitting password)
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.userId },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        createdAt: true
-      }
-    });
+    const result = await pool.query(
+      'SELECT id, username, email, role, "createdAt" FROM "User" WHERE id = $1',
+      [req.user.userId]
+    );
 
-    if (!user) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'User not found in database.' });
     }
 
     res.status(200).json({
       message: 'Welcome to your private profile!',
-      user
+      user: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error fetching profile', error: error.message });
@@ -142,13 +143,16 @@ router.post('/forgot-password', async (req, res) => {
     }
 
     // Verify user exists in PostgreSQL
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
+    const result = await pool.query(
+      'SELECT id, email FROM "User" WHERE LOWER(email) = LOWER($1)',
+      [email.trim()]
+    );
 
-    if (!user) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'No account registered with this email address.' });
     }
+
+    const user = result.rows[0];
 
     // Generate a temporary 15-minute reset token
     const resetToken = jwt.sign(
@@ -188,7 +192,7 @@ router.post('/reset-password', async (req, res) => {
       return res.status(403).json({ message: 'Reset token is invalid or has expired. Please request a new one.' });
     }
 
-    if (decoded.email !== email || decoded.purpose !== 'password_reset') {
+    if (decoded.email.toLowerCase() !== email.toLowerCase().trim() || decoded.purpose !== 'password_reset') {
       return res.status(403).json({ message: 'Invalid reset token credentials.' });
     }
 
@@ -197,10 +201,14 @@ router.post('/reset-password', async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     // Update password in PostgreSQL
-    await prisma.user.update({
-      where: { email },
-      data: { password: hashedPassword }
-    });
+    const updateResult = await pool.query(
+      'UPDATE "User" SET password = $1, "updatedAt" = NOW() WHERE LOWER(email) = LOWER($2) RETURNING id',
+      [hashedPassword, email.trim()]
+    );
+
+    if (updateResult.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found to update password.' });
+    }
 
     res.status(200).json({
       message: 'Password successfully updated in database! You can now sign in.'
